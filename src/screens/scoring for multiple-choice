@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Button, Alert, ScrollView } from "react-native";
 
 const MultipleChoiceForm = () => {
-  // คำถามแบบตัวเลือก (Multiple Choice) 5 ข้อ
+  // คำถามแบบตัวเลือก (Multiple Choice) 
   const multipleChoiceQuestions = [
     {
       question: "1. อุปกรณ์ใดใช้สำหรับเก็บข้อมูลถาวร?",
