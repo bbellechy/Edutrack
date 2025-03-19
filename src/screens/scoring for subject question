@@ -11,48 +11,20 @@ const ManualScoringForm = () => {
     "5. คุณคิดว่า AI มีผลกระทบอย่างไรต่อวงการคอมพิวเตอร์ในอนาคต?",
   ];
 
-  // คำถามแบบตัวเลือก (Multiple Choice)
-  const multipleChoiceQuestions = [
-    {
-      question: "6. อุปกรณ์ใดใช้สำหรับเก็บข้อมูลถาวร?",
-      choices: ["RAM", "CPU", "HDD", "Power Supply"],
-      correctAnswer: "HDD",
-    },
-    {
-      question: "7. ซอฟต์แวร์ใดเป็นระบบปฏิบัติการ?",
-      choices: ["Microsoft Word", "Windows", "Photoshop", "Google Chrome"],
-      correctAnswer: "Windows",
-    },
-    {
-      question: "8. หน่วยความจำใดทำให้คอมพิวเตอร์เปิดเครื่องได้เร็วขึ้น?",
-      choices: ["RAM", "HDD", "SSD", "Power Supply"],
-      correctAnswer: "SSD",
-    },
-    {
-      question: "9. ภาษาโปรแกรมใดนิยมใช้พัฒนาเว็บไซต์?",
-      choices: ["Python", "HTML", "C++", "Java"],
-      correctAnswer: "HTML",
-    },
-    {
-      question: "10. ไฟล์ใดเป็นไฟล์รูปภาพ?",
-      choices: [".exe", ".mp3", ".jpg", ".txt"],
-      correctAnswer: ".jpg",
-    },
-  ];
-
   // เก็บคำตอบของผู้ใช้
   const [shortAnswers, setShortAnswers] = useState(Array(shortAnswerQuestions.length).fill(""));
-  const [multipleChoiceAnswers, setMultipleChoiceAnswers] = useState(Array(multipleChoiceQuestions.length).fill(""));
   const [score, setScore] = useState(null);
 
   // ฟังก์ชันบันทึกคำตอบและตรวจคะแนน
   const handleSubmit = () => {
     let totalScore = 0;
 
-    // ตรวจคำตอบแบบตัวเลือก
-    multipleChoiceAnswers.forEach((answer, index) => {
-      if (answer === multipleChoiceQuestions[index].correctAnswer) {
-        totalScore += 1;
+    // เนื่องจากคำถามเป็นแบบตอบเอง ไม่มีคำตอบที่ถูกต้องคงที่
+    // อาจจะต้องประเมินคำตอบด้วยวิธีการอื่น เช่น ตรวจสอบคำตอบที่ผู้ใช้ให้มา
+    // ในที่นี้เราจะตั้งให้คะแนนเป็น 0 ถ้าผู้ใช้ไม่ตอบคำถาม
+    shortAnswers.forEach((answer) => {
+      if (answer.trim() !== "") {
+        totalScore += 1;  // สมมุติว่าให้คะแนน 1 คะแนนต่อคำถามที่ตอบ
       }
     });
 
@@ -60,9 +32,8 @@ const ManualScoringForm = () => {
 
     // ล้างคำตอบหลังส่ง
     setShortAnswers(Array(shortAnswerQuestions.length).fill(""));
-    setMultipleChoiceAnswers(Array(multipleChoiceQuestions.length).fill(""));
 
-    Alert.alert(`✅ คุณได้ ${totalScore} คะแนน จาก 5 ข้อของแบบเลือกตอบ`);
+    Alert.alert(`✅ คุณได้ ${totalScore} คะแนน จาก ${shortAnswerQuestions.length} ข้อ`);
   };
 
   return (
@@ -98,28 +69,6 @@ const ManualScoringForm = () => {
           ))}
         </View>
 
-        {/* คำถามแบบตัวเลือก */}
-        <View style={{ width: '100%' }}>
-          {multipleChoiceQuestions.map((item, index) => (
-            <View key={index} style={{ marginBottom: 20 }}>
-              <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 10 }}>{item.question}</Text>
-              {item.choices.map((choice, choiceIndex) => (
-                <View key={choiceIndex} style={{ marginBottom: 10 }}>
-                  <Button
-                    title={choice}
-                    onPress={() => {
-                      const newAnswers = [...multipleChoiceAnswers];
-                      newAnswers[index] = choice;
-                      setMultipleChoiceAnswers(newAnswers);
-                    }}
-                    color={multipleChoiceAnswers[index] === choice ? "#4CAF50" : "#2196F3"}
-                  />
-                </View>
-              ))}
-            </View>
-          ))}
-        </View>
-
         {/* ปุ่มบันทึก */}
         <Button
           title="💾 บันทึกคำตอบ"
@@ -131,7 +80,7 @@ const ManualScoringForm = () => {
         {score !== null && (
           <View style={{ marginTop: 20, padding: 10, backgroundColor: '#f0f4f8', borderRadius: 8 }}>
             <Text style={{ fontSize: 16, fontWeight: '600' }}>
-              🎯 คุณได้คะแนน: <Text style={{ color: '#1d4ed8' }}>{score}</Text> / 5 จากข้อเลือกตอบ
+              🎯 คุณได้คะแนน: <Text style={{ color: '#1d4ed8' }}>{score}</Text> / {shortAnswerQuestions.length} จากข้อคำถามตอบเอง
             </Text>
           </View>
         )}
