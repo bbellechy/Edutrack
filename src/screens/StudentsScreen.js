@@ -4,8 +4,6 @@ import { getAllData } from "../services/firestoreService"; // เรียกใ
 import { firestore } from "../firebase";
 import { addDoc, collection, getDocs, Timestamp } from "firebase/firestore";
 
-
-
 const StudentsScreen = () => {
   const [data, setData] = useState({
     parents: [],

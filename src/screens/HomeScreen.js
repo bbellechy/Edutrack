@@ -9,28 +9,14 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.header}>
         <Text style={styles.greeting}>Edutrack </Text>
       </View>
-      
-      {/* Action Buttons */}
-      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Dashboard')}>
-        <View style={styles.cardContent}>
-          <View>
-            <Text style={styles.cardTitle}>Dashboard</Text>
-            <Text style={styles.cardDescription}>view Dashboard</Text>
-          </View>
-          <Ionicons name="bar-chart-outline" size={40} color="#0D47A1" />
-        </View>
-      </TouchableOpacity>
 
-      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ParentResult')}>
-        <View style={styles.cardContent}>
-          <View>
-            <Text style={styles.cardTitle}>Parent Result</Text>
-            <Text style={styles.cardDescription}>view as a parent</Text>
-          </View>
-          <Ionicons name="people-outline" size={40} color="#0D47A1" />
-        </View>
-      </TouchableOpacity>
-      
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to Parent Result"
+          onPress={() => navigation.navigate('ParentResult')}
+          color="#28A745"
+        />
+      </View>
     </View>
   );
 };
