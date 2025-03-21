@@ -31,23 +31,23 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('MultipleChoiceForm')}>
+      <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Multiple')}>
         <View style={styles.cardContent}>
           <View>
             <Text style={styles.cardTitle}>MultipleChoice Form</Text>
             <Text style={styles.cardDescription}>View Multiple Choice Form</Text>
           </View>
-          <Ionicons name="document-text-outline" size={40} color="#0D47A1" />
+          <Ionicons name="document-text-outline" size={40} color="#2E7D32" />
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ManualScoringForm')}>
+      <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Manual')}>
         <View style={styles.cardContent}>
           <View>
             <Text style={styles.cardTitle}>Manual Scoring Form</Text>
             <Text style={styles.cardDescription}>View Manual Scoring Form</Text>
           </View>
-          <Ionicons name="document-text-outline" size={40} color="#0D47A1" />
+          <Ionicons name="document-text-outline" size={40} color="#2E7D32" />
         </View>
       </TouchableOpacity>
 
@@ -76,6 +76,9 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     marginVertical: 10,
+  },
+  greenCard: {
+    backgroundColor: '#66BB6A',
   },
   cardContent: {
     flexDirection: 'row',
