@@ -46,7 +46,7 @@ const HomeScreen = ({ navigation }) => {
       {/* ปุ่ม Short Answer (สีเขียว) */}
       <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Manual')}>
         <View style={styles.cardContent}>
-
+          <Text style={styles.cardTitle}>Short Answer</Text>
           <Ionicons name="create-outline" size={30} color="#2E7D32" />
         </View>
       </TouchableOpacity>
