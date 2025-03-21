@@ -1,7 +1,39 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, StyleSheet, ScrollView, FlatList } from "react-native";
+import { getAllData } from "../services/firestoreService"; // นำเข้า service ที่ใช้ดึงข้อมูลจาก Firestore
 
 const DashboardScreen = () => {
+  const [students, setStudents] = useState([]);
+  const [testResults, setTestResults] = useState([]);
+  const [getTestsData, setgetTestsData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const allData = await getAllData();
+      setStudents(allData.students || []);
+      setTestResults(allData.testResults || []);
+      setgetTestsData(allData.getTestsData || []);
+    };
+    fetchData();
+  }, []);
+
+  // ฟังก์ชัน Render รายการนักเรียน
+  const renderStudentItem = ({ item }) => {
+    return (
+      <View style={styles.profileContainer}>
+        <Image
+          source={{ uri: "https://via.placeholder.com/50" }} 
+          style={styles.profilePic}
+        />
+        <View style={styles.profileDetails}>
+        <Text>Profile</Text>
+          <Text>Name: {item.name}</Text>
+          <Text>ID: {item.studentID}</Text>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <ScrollView style={styles.container}>
       {/* Header */}
@@ -9,59 +41,79 @@ const DashboardScreen = () => {
         <Text style={styles.headerText}>Exam Results</Text>
       </View>
 
-      {/* Profile Section */}
-      <View style={styles.profileContainer}>
-        <Image
-          source={{ uri: "https://via.placeholder.com/80" }} // รูปโปรไฟล์ (ใส่ลิงก์จริง)
-          style={styles.profilePic}
-        />
-        <View style={styles.profileDetails}>
-          <Text>Name: XXXXX</Text>
-          <Text>ID: XXXXX</Text>
-          <Text>Name: XXXXX</Text>
-        </View>
-      </View>
+      {/* Student List */}
+      <Text style={styles.sectionTitle}>Students</Text>
+      <FlatList
+        data={students}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderStudentItem}
+      />
 
       {/* Overview Section */}
       <Text style={styles.sectionTitle}>Overview</Text>
       <View style={styles.overviewContainer}>
         <View style={styles.overviewBox}>
           <Text style={styles.boxTitle}>Ranking</Text>
-          <Text style={styles.boxValue}>52</Text>
+          <Text style={styles.boxValue}>1</Text> 
         </View>
         <View style={styles.overviewBox}>
           <Text style={styles.boxTitle}>Total Score</Text>
-          <Text style={styles.boxValue}>601</Text>
+          <Text style={styles.boxValue}>{testResults.reduce((acc, curr) => acc + curr.score, 0)}</Text>
         </View>
       </View>
 
       {/* Pretest & Posttest Section */}
-      <View style={styles.testContainer}>
+      <Text style={styles.sectionTitle}>Test Results</Text>
+<View style={styles.resultsContainer}>
+  {/* Pretest Section */}
+  <View style={styles.pretestBox}>
+    <Text style={styles.testCategory}>Pretest</Text>
+    <FlatList
+      data={testResults.filter(item => item.testType === 'pretest')}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => (
         <View style={styles.testBox}>
-          <Text style={styles.testTitle}>Pretest</Text>
-          <View style={styles.circleContainer}>
-            {[...Array(6)].map((_, index) => (
-              <View key={index} style={styles.circle}>
-                <Text style={styles.circleText}>60%</Text>
-                <Text style={styles.subjectText}>Subject</Text>
-              </View>
-            ))}
+          <Text style={styles.testTitle}>{item.subject}</Text>
+          <View style={styles.circle}>
+            <Text style={styles.circleText}>{item.score}%</Text>
           </View>
         </View>
+      )}
+    />
+  </View>
 
+  {/* Posttest Section */}
+  <View style={styles.posttestBox}>
+    <Text style={styles.testCategory}>Posttest</Text>
+    <FlatList
+      data={testResults.filter(item => item.testType === 'posttest')}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => (
         <View style={styles.testBox}>
-          <Text style={styles.testTitle}>Posttest</Text>
-          <View style={styles.circleContainer}>
-            {[...Array(6)].map((_, index) => (
-              <View key={index} style={styles.circle}>
-                <Text style={styles.circleText}>60%</Text>
-                <Text style={styles.subjectText}>Subject</Text>
-              </View>
-            ))}
+          <Text style={styles.testTitle}>{item.subject}</Text>
+          <View style={styles.circle}>
+            <Text style={styles.circleText}>{item.score}%</Text>
           </View>
+        </View>
+      )}
+    />
+  </View>
+</View>
+
+
+
+  {/* <View style={styles.profileContainer}>
+        <Image
+          source={{ uri: "https://via.placeholder.com/50" }} 
+          style={styles.profilePic}
+        />
+        <View style={styles.profileDetails}>
+          <Text>Name: {item.name}</Text>
+          <Text>ID: {item.studentID}</Text>
         </View>
       </View>
-
+    ); */}
+    
       {/* Study Plan Section */}
       <Text style={styles.sectionTitle}>Study Plan</Text>
       <View style={styles.studyPlanBox} />
@@ -72,7 +124,6 @@ const DashboardScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#C0E7FF", 
     padding: 10,
   },
   header: {
@@ -128,13 +179,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  testContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
   testBox: {
     backgroundColor: "#D3D3D3",
-    flex: 1,
     margin: 5,
     padding: 10,
     borderRadius: 5,
@@ -144,11 +190,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     marginBottom: 5,
-  },
-  circleContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
   },
   circle: {
     width: 50,
@@ -163,9 +204,6 @@ const styles = StyleSheet.create({
   circleText: {
     fontSize: 12,
     fontWeight: "bold",
-  },
-  subjectText: {
-    fontSize: 10,
   },
   studyPlanBox: {
     backgroundColor: "#D3D3D3",

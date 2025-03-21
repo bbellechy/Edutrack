@@ -24,6 +24,13 @@ const HomeScreen = ({ navigation }) => {
 
       <View style={styles.buttonContainer}>
         <Button
+          title="Go to Test Result"
+          onPress={() => navigation.navigate('TestResult')}
+          color="#007BFF"
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
           title="Multiple Choices"
           onPress={() => navigation.navigate('Multiple')}
           color="#28A745"
