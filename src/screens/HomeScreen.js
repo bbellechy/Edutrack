@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const HomeScreen = ({ navigation }) => {
@@ -7,16 +7,50 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       {/* Header Section */}
       <View style={styles.header}>
-        <Text style={styles.greeting}>Edutrack </Text>
+        <Text style={styles.greeting}>Edutrack</Text>
       </View>
 
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Go to Parent Result"
-          onPress={() => navigation.navigate('ParentResult')}
-          color="#28A745"
-        />
-      </View>
+      {/* Action Buttons */}
+      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Dashboard')}>
+        <View style={styles.cardContent}>
+          <View>
+            <Text style={styles.cardTitle}>Dashboard</Text>
+            <Text style={styles.cardDescription}>View Dashboard</Text>
+          </View>
+          <Ionicons name="bar-chart-outline" size={40} color="#0D47A1" />
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ParentResult')}>
+        <View style={styles.cardContent}>
+          <View>
+            <Text style={styles.cardTitle}>Parent Result</Text>
+            <Text style={styles.cardDescription}>View as a Parent</Text>
+          </View>
+          <Ionicons name="people-outline" size={40} color="#0D47A1" />
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('MultipleChoiceForm')}>
+        <View style={styles.cardContent}>
+          <View>
+            <Text style={styles.cardTitle}>MultipleChoice Form</Text>
+            <Text style={styles.cardDescription}>View Multiple Choice Form</Text>
+          </View>
+          <Ionicons name="document-text-outline" size={40} color="#0D47A1" />
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ManualScoringForm')}>
+        <View style={styles.cardContent}>
+          <View>
+            <Text style={styles.cardTitle}>Manual Scoring Form</Text>
+            <Text style={styles.cardDescription}>View Manual Scoring Form</Text>
+          </View>
+          <Ionicons name="document-text-outline" size={40} color="#0D47A1" />
+        </View>
+      </TouchableOpacity>
+
     </View>
   );
 };
