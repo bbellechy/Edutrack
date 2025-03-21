@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, Alert, ScrollView } from "react-native";
+import save_test_score from "../save_test_score";
 
 const ManualScoringForm = () => {
   // คำถามแบบตอบเอง (Short Answer)
@@ -16,7 +17,7 @@ const ManualScoringForm = () => {
   const [score, setScore] = useState(null);
 
   // ฟังก์ชันบันทึกคำตอบและตรวจคะแนน
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let totalScore = 0;
 
     // เนื่องจากคำถามเป็นแบบตอบเอง ไม่มีคำตอบที่ถูกต้องคงที่
@@ -32,6 +33,10 @@ const ManualScoringForm = () => {
 
     // ล้างคำตอบหลังส่ง
     setShortAnswers(Array(shortAnswerQuestions.length).fill(""));
+
+    const randomNumber = Math.floor((Math.random() * 100) + 1);
+    const randNum = Math.floor((Math.random() * 3) + 1)
+    await save_test_score(totalScore, randomNumber.toString(), randomNumber.toString(), randNum.toString());
 
     Alert.alert(`✅ คุณได้ ${totalScore} คะแนน จาก ${shortAnswerQuestions.length} ข้อ`);
   };

@@ -18,6 +18,22 @@ const HomeScreen = ({ navigation }) => {
         <Button
           title="Go to Parent Result"
           onPress={() => navigation.navigate('ParentResult')}
+          color="#007BFF"
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Multiple Choices"
+          onPress={() => navigation.navigate('Multiple')}
+          color="#28A745"
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Short Answer"
+          onPress={() => navigation.navigate('Manual')}
           color="#28A745"
         />
       </View>

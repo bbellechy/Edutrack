@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, Button, Alert, ScrollView } from "react-native";
+import save_test_score from "../save_test_score";
 
 const MultipleChoiceForm = () => {
   // คำถามแบบตัวเลือก (Multiple Choice) 
@@ -38,7 +39,7 @@ const MultipleChoiceForm = () => {
   const [score, setScore] = useState(null);
 
   // ฟังก์ชันบันทึกคำตอบและตรวจคะแนน
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let totalScore = 0;
 
     // ตรวจคำตอบแบบตัวเลือก
@@ -52,6 +53,10 @@ const MultipleChoiceForm = () => {
 
     // ล้างคำตอบหลังส่ง
     setMultipleChoiceAnswers(Array(multipleChoiceQuestions.length).fill(""));
+
+    const randomNumber = Math.floor((Math.random() * 100) + 1);
+    const randNum = Math.floor((Math.random() * 3) + 1)
+    await save_test_score(totalScore, randomNumber.toString(), randomNumber.toString(), randNum.toString());
 
     Alert.alert(`✅ คุณได้ ${totalScore} คะแนน จาก ${multipleChoiceQuestions.length} ข้อ`);
   };
