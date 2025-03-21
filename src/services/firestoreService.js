@@ -27,6 +27,7 @@ export const getStudentsData = async () => {
 export const getTestResults = async () => {
   try {
     const querySnapshot = await getDocs(collection(firestore, "TestResult"));
+    console.log(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
     console.error("Error fetching TestResult data:", error);
@@ -53,6 +54,7 @@ export const getAllData = async () => {
     const testResultsData = await getTestResults();
     const testsData = await getTestsData();
 
+    console.log("logggg",     parentsData, studentsData, testResultsData, testsData)
     return {
       parents: parentsData,
       students: studentsData,

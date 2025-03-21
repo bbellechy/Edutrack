@@ -10,47 +10,29 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.greeting}>Edutrack</Text>
       </View>
 
-      {/* Action Buttons */}
-      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Dashboard')}>
-        <View style={styles.cardContent}>
-          <View>
-            <Text style={styles.cardTitle}>Dashboard</Text>
-            <Text style={styles.cardDescription}>View Dashboard</Text>
-          </View>
-          <Ionicons name="bar-chart-outline" size={40} color="#0D47A1" />
-        </View>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to Parent Result"
+          onPress={() => navigation.navigate('ParentResult')}
+          color="#007BFF"
+        />
+      </View>
 
-      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ParentResult')}>
-        <View style={styles.cardContent}>
-          <View>
-            <Text style={styles.cardTitle}>Parent Result</Text>
-            <Text style={styles.cardDescription}>View as a Parent</Text>
-          </View>
-          <Ionicons name="people-outline" size={40} color="#0D47A1" />
-        </View>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Multiple Choices"
+          onPress={() => navigation.navigate('Multiple')}
+          color="#28A745"
+        />
+      </View>
 
-      <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Multiple')}>
-        <View style={styles.cardContent}>
-          <View>
-            <Text style={styles.cardTitle}>MultipleChoice Form</Text>
-            <Text style={styles.cardDescription}>View Multiple Choice Form</Text>
-          </View>
-          <Ionicons name="document-text-outline" size={40} color="#2E7D32" />
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Manual')}>
-        <View style={styles.cardContent}>
-          <View>
-            <Text style={styles.cardTitle}>Manual Scoring Form</Text>
-            <Text style={styles.cardDescription}>View Manual Scoring Form</Text>
-          </View>
-          <Ionicons name="document-text-outline" size={40} color="#2E7D32" />
-        </View>
-      </TouchableOpacity>
-
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Short Answer"
+          onPress={() => navigation.navigate('Manual')}
+          color="#28A745"
+        />
+      </View>
     </View>
   );
 };
