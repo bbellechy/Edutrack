@@ -2,6 +2,7 @@ import React from "react";
 import { SafeAreaView } from "react-native";
 import HomeScreen from "./src/screens/HomeScreen";
 import DashboardScreen from "./src/screens/DashboardScreen";
+import TestResultSceeen from "./src/screens/TestResultSceeen";
 import ParentResultSceen from "./src/screens/ParentResultSceen";
 import MultipleChoiceForm from "./src/screens/MultipleChoiceFormScreen";
 import ManualScoringForm from "./src/screens/ManualScoringFormScreen";
@@ -21,6 +22,7 @@ function App() {
         <Stack.Screen name="ParentResult" component={ParentResultSceen} />
         <Stack.Screen name="Multiple" component={MultipleChoiceForm} />
         <Stack.Screen name="Manual" component={ManualScoringForm} />
+        <Stack.Screen name="TestResult" component={TestResultSceeen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

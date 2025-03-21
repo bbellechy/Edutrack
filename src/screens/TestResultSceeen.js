@@ -1,15 +1,15 @@
 import React from "react";
-import { View, Text, Image, Dimensions, TextInput, StyleSheet } from "react-native";
-import { LineChart } from "react-native-chart-kit";
+import { View, Text, Image, Dimensions, StyleSheet } from "react-native";
+import { BarChart } from "react-native-chart-kit";
 
-const ParentResultScreen = () => {
+const TestResultScreen = () => {
   const screenWidth = Dimensions.get("window").width;
 
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerText}>🏠 Parent Result</Text>
+        <Text style={styles.headerText}>🏠 Student Test Result</Text>
       </View>
 
       {/* Profile Section */}
@@ -24,23 +24,24 @@ const ParentResultScreen = () => {
 
       {/* Test Score */}
       <View style={styles.testScoreContainer}>
+        <Text style={styles.testScoreTitle}>Test Score</Text>
+
         <View style={styles.scoreBox}>
-          <Text style={styles.scoreLabel}>Per - Test</Text>
-          <Text style={styles.scoreValue}>50</Text>
+          <Text style={styles.scoreLabel}>Pre-test</Text>
+          <Text style={styles.scoreValue}>Score: 50 Point</Text>
         </View>
 
         <View style={styles.scoreBox}>
-          <Text style={styles.scoreLabel}>Post - Test</Text>
-          <Text style={styles.scoreValue}>90</Text>
+          <Text style={styles.scoreLabel}>Post-test</Text>
+          <Text style={styles.scoreValue}>Score: 90 Point</Text>
         </View>
       </View>
 
-      {/* Progress Chart */}
-      <Text style={styles.progressText}>Progress</Text>
-      <LineChart
+      {/* Bar Chart */}
+      <BarChart
         data={{
-          labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-          datasets: [{ data: [30, 60, 50, 90] }],
+          labels: ["Pre-test", "Post-test"],
+          datasets: [{ data: [50, 90] }],
         }}
         width={screenWidth * 0.9}
         height={200}
@@ -50,7 +51,6 @@ const ParentResultScreen = () => {
           color: () => `#000`,
           decimalPlaces: 0,
         }}
-        bezier
         style={styles.chart}
       />
 
@@ -62,13 +62,6 @@ const ParentResultScreen = () => {
 
       {/* Test Date */}
       <Text style={styles.testDate}>Test date: 01/01/2025</Text>
-
-      {/* Teacher's Suggestion */}
-      <TextInput
-        style={styles.suggestionBox}
-        placeholder="ข้อเสนอแนะจากอาจารย์ :"
-        placeholderTextColor="#999"
-      />
     </View>
   );
 };
@@ -77,7 +70,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#cce7ff",
+    backgroundColor: "#C0E7FF",
     padding: 16,
   },
   header: {
@@ -106,17 +99,19 @@ const styles = StyleSheet.create({
     color: "#555",
   },
   testScoreContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "80%",
+    width: "100%",
     marginTop: 16,
+  },
+  testScoreTitle: {
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
   },
   scoreBox: {
     backgroundColor: "#fff",
     padding: 12,
-    width: "45%",
+    margin: 8,
     borderRadius: 10,
-    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -124,19 +119,16 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   scoreLabel: {
+    textAlign: "center",
     fontWeight: "600",
   },
   scoreValue: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  progressText: {
-    marginTop: 20,
-    fontSize: 16,
+    textAlign: "center",
+    fontSize: 18,
     fontWeight: "bold",
   },
   chart: {
-    marginTop: 10,
+    marginTop: 16,
   },
   resultBox: {
     marginTop: 16,
@@ -165,19 +157,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     color: "#555",
   },
-  suggestionBox: {
-    marginTop: 16,
-    width: "90%",
-    backgroundColor: "#fff",
-    padding: 10,
-    borderRadius: 10,
-    fontSize: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
 });
 
-export default ParentResultScreen;
+export default TestResultScreen;
