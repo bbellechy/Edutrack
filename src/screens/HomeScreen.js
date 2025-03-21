@@ -5,34 +5,48 @@ import { Ionicons } from '@expo/vector-icons';
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      {/* Header Section */}
-      <View style={styles.header}>
-        <Text style={styles.greeting}>Edutrack</Text>
-      </View>
+      <Text style={styles.title}>Welcome to Edutrack</Text>
 
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Go to Parent Result"
-          onPress={() => navigation.navigate('ParentResult')}
-          color="#007BFF"
-        />
-      </View>
+      {/* ปุ่ม Dashboard */}
+      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Dashboard')}>
+        <View style={styles.cardContent}>
+          <Text style={styles.cardTitle}>Dashboard</Text>
+          <Ionicons name="bar-chart-outline" size={30} color="#0D47A1" />
+        </View>
+      </TouchableOpacity>
 
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Multiple Choices"
-          onPress={() => navigation.navigate('Multiple')}
-          color="#28A745"
-        />
-      </View>
+      {/* ปุ่ม Parent Result */}
+      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ParentResult')}>
+        <View style={styles.cardContent}>
+          <Text style={styles.cardTitle}>Parent Result</Text>
+          <Ionicons name="people-outline" size={30} color="#0D47A1" />
+        </View>
+      </TouchableOpacity>
 
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Short Answer"
-          onPress={() => navigation.navigate('Manual')}
-          color="#28A745"
-        />
-      </View>
+      {/* ปุ่ม Test Result */}
+      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('TestResult')}>
+        <View style={styles.cardContent}>
+          <Text style={styles.cardTitle}>Test Result</Text>
+          <Ionicons name="document-text-outline" size={30} color="#0D47A1" />
+        </View>
+      </TouchableOpacity>
+
+      {/* ปุ่ม Multiple Choices (สีเขียว) */}
+      <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Multiple')}>
+        <View style={styles.cardContent}>
+          <Text style={styles.cardTitle}>Multiple Choices</Text>
+          <Ionicons name="list-outline" size={30} color="#2E7D32" />
+        </View>
+      </TouchableOpacity>
+
+      {/* ปุ่ม Short Answer (สีเขียว) */}
+      <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Manual')}>
+        <View style={styles.cardContent}>
+          <Text style={styles.cardTitle}>Short Answer</Text>
+          <Ionicons name="create-outline" size={30} color="#2E7D32" />
+        </View>
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -40,24 +54,24 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E3F2FD',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#C0E7FF', // พื้นหลังสีฟ้าอ่อน
     padding: 20,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  greeting: {
-    fontSize: 20,
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 20,
     color: '#0D47A1',
   },
   card: {
     backgroundColor: '#90CAF9',
-    padding: 20,
+    padding: 15,
     borderRadius: 10,
+    width: 250,
     marginVertical: 10,
+    alignItems: 'center',
   },
   greenCard: {
     backgroundColor: '#66BB6A',
@@ -66,15 +80,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    width: '100%',
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#0D47A1',
-  },
-  cardDescription: {
-    fontSize: 14,
-    color: '#546E7A',
   },
 });
 
