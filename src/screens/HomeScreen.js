@@ -11,6 +11,7 @@ const HomeScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Dashboard')}>
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>Dashboard</Text>
+          <Text style={styles.cardDescription}>View Dashboard</Text>
           <Ionicons name="bar-chart-outline" size={30} color="#0D47A1" />
         </View>
       </TouchableOpacity>
@@ -19,6 +20,7 @@ const HomeScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ParentResult')}>
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>Parent Result</Text>
+          <Text style={styles.cardDescription}>View as a parent</Text>
           <Ionicons name="people-outline" size={30} color="#0D47A1" />
         </View>
       </TouchableOpacity>
@@ -27,6 +29,7 @@ const HomeScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('TestResult')}>
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>Test Result</Text>
+          <Text style={styles.cardDescription}>View a test result</Text>
           <Ionicons name="document-text-outline" size={30} color="#0D47A1" />
         </View>
       </TouchableOpacity>
@@ -35,6 +38,7 @@ const HomeScreen = ({ navigation }) => {
       <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Multiple')}>
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>Multiple Choices</Text>
+          <Text style={styles.cardDescription}>Do a Multiple Choice Form</Text>
           <Ionicons name="list-outline" size={30} color="#2E7D32" />
         </View>
       </TouchableOpacity>
@@ -42,7 +46,7 @@ const HomeScreen = ({ navigation }) => {
       {/* ปุ่ม Short Answer (สีเขียว) */}
       <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Manual')}>
         <View style={styles.cardContent}>
-          <Text style={styles.cardTitle}>Short Answer</Text>
+          <Text style={styles.cardTitle}>Do a Short Answer form</Text>
           <Ionicons name="create-outline" size={30} color="#2E7D32" />
         </View>
       </TouchableOpacity>
