@@ -42,7 +42,23 @@ export const getAllData = async () => {
     const testResultsData = await getTestResults();
     const testsData = await getTestsData();
 
-    console.log("logggg",     parentsData, studentsData, testResultsData, testsData)
+    const groupedBySubject = testResultsData.reduce((acc, item) => {
+      if (!acc[item.subject]) {
+          acc[item.subject] = [];
+      }
+      acc[item.subject].push(item);
+      return acc;
+  }, {});
+  
+  // เรียงคะแนนภายในแต่ละวิชา
+  for (const subject in groupedBySubject) {
+      groupedBySubject[subject].sort((a, b) => b.score - a.score); // เรียงจากมากไปน้อย
+  }
+  
+  // แสดงผลลัพธ์
+  console.log("groupedBySubject", groupedBySubject);
+  console.log(groupedBySubject["Thai"]);
+    
     return {
       parents: parentsData,
       students: studentsData,
@@ -60,23 +76,7 @@ export const getAllData = async () => {
   }
 };
 
-// ฟังก์ชันดึงข้อมูลจาก nested collection
-const getNestedTestResults = async (parentDocRef) => {
-  try {
-    const subCollections = await parentDocRef.listCollections();
-    let results = [];
 
-    for (const subCollection of subCollections) {
-      const querySnapshot = await getDocs(subCollection);
-      results = results.concat(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    }
-
-    return results;
-  } catch (error) {
-    console.error("Error fetching nested TestResult data:", error);
-    return [];
-  }
-};
 
 // ฟังก์ชันดึงข้อมูลจาก `TestResult` (รวม nested collection)
 export const getTestResults = async () => {
