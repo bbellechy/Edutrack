@@ -1,10 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Button, Alert, ScrollView } from "react-native";
-import save_test_score from "../save_test_score";
+import save_test_score from "../services/firestore/save_test_score"
+import load_test from "../services/firestore/load_test";
+import load_test_title from "../services/firestore/load_test_title";
 
 const MultipleChoiceForm = () => {
+  const [multipleChoiceQuestions, setMultipleChoiceQuestions] = useState([]);
+  const [title, setTitle] = useState("");
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const question = await load_test("oCA2gAV8NVIQpx6z8Ed1");
+      const test_title = await load_test_title("oCA2gAV8NVIQpx6z8Ed1");
+      setTitle(test_title);
+      setMultipleChoiceQuestions(question);
+    };
+    fetchData();
+    console.log(111, title)
+    console.log(222, multipleChoiceQuestions)
+  }, []);
+
+
+
   // คำถามแบบตัวเลือก (Multiple Choice) 
-  const multipleChoiceQuestions = [
+  const multipleChoiceQuestions_old = [
     {
       question: "1. อุปกรณ์ใดใช้สำหรับเก็บข้อมูลถาวร?",
       choices: ["RAM", "CPU", "HDD", "Power Supply"],
@@ -64,7 +84,8 @@ const MultipleChoiceForm = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 20, backgroundColor: '#f7fafc' }}>
       <View style={{ alignItems: 'center', marginBottom: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>📝 แบบฟอร์มคำถามคอมพิวเตอร์</Text>
+        <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 0 }}>{title.title}</Text>
+        <Text style={{ fontSize: 18, fontWeight: '', marginBottom: 20 }}>{title.Description}</Text>
 
         {/* คำถามแบบตัวเลือก */}
         <View style={{ width: '100%' }}>

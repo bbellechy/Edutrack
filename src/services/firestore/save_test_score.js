@@ -1,4 +1,4 @@
-import { firestore } from "./firebase";
+import { firestore } from "../../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 
 const save_test_score = async (score, studentID, testResultID, test_id) => {
