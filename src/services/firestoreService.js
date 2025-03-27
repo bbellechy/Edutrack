@@ -63,7 +63,8 @@ export const getAllData = async () => {
       parents: parentsData,
       students: studentsData,
       testResults: testResultsData,
-      tests: testsData
+      tests: testsData,
+      groupedBySubject: groupedBySubject
     };
   } catch (error) {
     console.error("Error fetching all data:", error);
@@ -71,7 +72,8 @@ export const getAllData = async () => {
       parents: [],
       students: [],
       testResults: [],
-      tests: []
+      tests: [],
+      groupedBySubject: []
     };
   }
 };

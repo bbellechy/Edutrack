@@ -11,6 +11,7 @@ const DashboardScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       const allData = await getAllData();
+      // console.log("alll data", JSON.stringify(allData["groupedBySubject"], null, 4));
       if (allData) {
         setStudents(allData.students || []);
         setTestResults(allData.testResults || []);
