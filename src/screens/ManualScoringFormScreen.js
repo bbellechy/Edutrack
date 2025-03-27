@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, Button, Alert, ScrollView } from "react-native";
-import save_test_score from "../save_test_score";
+import save_test_score from "../services/firestore/save_test_score";
 
 const ManualScoringForm = () => {
   // คำถามแบบตอบเอง (Short Answer)
