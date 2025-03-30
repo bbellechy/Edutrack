@@ -1,0 +1,174 @@
+import React, { useState } from "react";
+import { View, Text, Button, Alert, TextInput, ScrollView } from "react-native";
+
+const CombinedForm = () => {
+  // Multiple Choice Questions
+  const multipleChoiceQuestions = [
+    {
+      question: "1. Which device is used for permanent data storage?",
+      choices: ["RAM", "CPU", "HDD", "Power Supply"],
+      correctAnswer: "HDD",
+    },
+    {
+      question: "2. Which software is an operating system?",
+      choices: ["Microsoft Word", "Windows", "Photoshop", "Google Chrome"],
+      correctAnswer: "Windows",
+    },
+    {
+      question: "3. Which memory makes the computer boot faster?",
+      choices: ["RAM", "HDD", "SSD", "Power Supply"],
+      correctAnswer: "SSD",
+    },
+    {
+      question: "4. Which programming language is popular for website development?",
+      choices: ["Python", "HTML", "C++", "Java"],
+      correctAnswer: "HTML",
+    },
+    {
+      question: "5. Which file is an image file?",
+      choices: [".exe", ".mp3", ".jpg", ".txt"],
+      correctAnswer: ".jpg",
+    },
+  ];
+
+  // Short Answer Questions
+  const shortAnswerQuestions = [
+    "1. What is an Operating System?",
+    "2. Explain the difference between HDD and SSD.",
+    "3. What is the function of a CPU in a computer?",
+    "4. What is RAM and how does it affect the computer's performance?",
+    "5. How do you think AI will impact the computer industry in the future?",
+  ];
+
+  // State to store answers
+  const [multipleChoiceAnswers, setMultipleChoiceAnswers] = useState(Array(multipleChoiceQuestions.length).fill(""));
+  const [shortAnswers, setShortAnswers] = useState(Array(shortAnswerQuestions.length).fill(""));
+  const [multipleChoiceScore, setMultipleChoiceScore] = useState(null);
+  const [shortAnswerScore, setShortAnswerScore] = useState(null);
+
+  // Function to submit and score multiple choice answers
+  const handleMultipleChoiceSubmit = () => {
+    let totalScore = 0;
+
+    // Check multiple choice answers
+    multipleChoiceAnswers.forEach((answer, index) => {
+      if (answer === multipleChoiceQuestions[index].correctAnswer) {
+        totalScore += 1;
+      }
+    });
+
+    setMultipleChoiceScore(totalScore);
+
+    Alert.alert(`✅ You scored ${totalScore} out of ${multipleChoiceQuestions.length} for multiple choice.`);
+  };
+
+  // Function to submit and score short answers
+  const handleShortAnswerSubmit = () => {
+    let totalScore = 0;
+
+    // Score short answers: giving 1 point for any answer provided
+    shortAnswers.forEach((answer) => {
+      if (answer.trim() !== "") {
+        totalScore += 1;
+      }
+    });
+
+    setShortAnswerScore(totalScore);
+
+    Alert.alert(`✅ You scored ${totalScore} out of ${shortAnswerQuestions.length} for short answers.`);
+  };
+
+  return (
+    <ScrollView contentContainerStyle={{ padding: 20, backgroundColor: '#f7fafc' }}>
+      <View style={{ alignItems: 'center', marginBottom: 20 }}>
+        <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>📝 Computer Quiz</Text>
+
+        {/* Multiple Choice Section */}
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Multiple Choice Questions</Text>
+        <View style={{ width: '100%' }}>
+          {multipleChoiceQuestions.map((item, index) => (
+            <View key={index} style={{ marginBottom: 20 }}>
+              <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 10 }}>{item.question}</Text>
+              {item.choices.map((choice, choiceIndex) => (
+                <View key={choiceIndex} style={{ marginBottom: 10 }}>
+                  <Button
+                    title={choice}
+                    onPress={() => {
+                      const newAnswers = [...multipleChoiceAnswers];
+                      newAnswers[index] = choice;
+                      setMultipleChoiceAnswers(newAnswers);
+                    }}
+                    color={multipleChoiceAnswers[index] === choice ? "#4CAF50" : "#2196F3"}
+                  />
+                </View>
+              ))}
+            </View>
+          ))}
+        </View>
+
+        {/* Submit Multiple Choice */}
+        <Button
+          title="💾 Submit Multiple Choice"
+          onPress={handleMultipleChoiceSubmit}
+          color="#007bff"
+        />
+
+        {/* Display Multiple Choice Score */}
+        {multipleChoiceScore !== null && (
+          <View style={{ marginTop: 20, padding: 10, backgroundColor: '#f0f4f8', borderRadius: 8 }}>
+            <Text style={{ fontSize: 16, fontWeight: '600' }}>
+              🎯 Multiple Choice Score: <Text style={{ color: '#1d4ed8' }}>{multipleChoiceScore}</Text> / {multipleChoiceQuestions.length}
+            </Text>
+          </View>
+        )}
+
+        {/* Short Answer Section */}
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 40, marginBottom: 10 }}>Short Answer Questions</Text>
+        <View style={{ width: '100%' }}>
+          {shortAnswerQuestions.map((question, index) => (
+            <View key={index} style={{ marginBottom: 20 }}>
+              <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 10 }}>{question}</Text>
+              <TextInput
+                value={shortAnswers[index]}
+                onChangeText={(text) => {
+                  const newAnswers = [...shortAnswers];
+                  newAnswers[index] = text;
+                  setShortAnswers(newAnswers);
+                }}
+                multiline
+                numberOfLines={3}
+                style={{
+                  height: 100,
+                  borderColor: '#d1d5db',
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                }}
+                placeholder="Type your answer here..."
+              />
+            </View>
+          ))}
+        </View>
+
+        {/* Submit Short Answers */}
+        <Button
+          title="💾 Submit Short Answers"
+          onPress={handleShortAnswerSubmit}
+          color="#007bff"
+        />
+
+        {/* Display Short Answer Score */}
+        {shortAnswerScore !== null && (
+          <View style={{ marginTop: 20, padding: 10, backgroundColor: '#f0f4f8', borderRadius: 8 }}>
+            <Text style={{ fontSize: 16, fontWeight: '600' }}>
+              🎯 Short Answer Score: <Text style={{ color: '#1d4ed8' }}>{shortAnswerScore}</Text> / {shortAnswerQuestions.length}
+            </Text>
+          </View>
+        )}
+      </View>
+    </ScrollView>
+  );
+};
+
+export default CombinedForm;
