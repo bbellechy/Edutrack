@@ -4,7 +4,7 @@ import save_test_score from "../services/firestore/save_test_score";
 import load_test from "../services/firestore/load_test";
 import load_test_title from "../services/firestore/load_test_title";
 
-const MultipleChoiceForm = () => {
+const PostTestScreen = () => {
   const [multipleChoiceQuestions, setMultipleChoiceQuestions] = useState([]);
   const [shortAnswerQuestions, setShortAnswerQuestions] = useState([]);
   const [multipleChoiceAnswers, setMultipleChoiceAnswers] = useState([]);
@@ -173,4 +173,4 @@ const MultipleChoiceForm = () => {
   );
 };
 
-export default MultipleChoiceForm;
+export default PostTestScreen;
