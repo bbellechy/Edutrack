@@ -11,6 +11,10 @@ const MultipleChoiceForm = () => {
   const [shortAnswers, setShortAnswers] = useState([]);
   const [title, setTitle] = useState("");
   const [score, setScore] = useState(null);
+  const [shortAnswerErrors, setShortAnswerErrors] = useState([]);
+  const [multipleChoiceErrors, setMultipleChoiceErrors] = useState([]);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +36,42 @@ const MultipleChoiceForm = () => {
 
   const handleSubmit = async () => {
     let totalScore = 0;
+    let errors = [];
+    let merrors = [];
+
+    const updatedErrors = shortAnswers.map((answer) => {
+      if (answer.trim() === "") {
+        errors.push(true);
+        return "กรุณากรอกคำตอบ";
+      } else {
+        errors.push(false);
+        return "";
+      }
+    });
+
+    setShortAnswerErrors(updatedErrors);
+
+    if (errors.includes(true)) {
+      Alert.alert("❌ กรุณากรอกคำตอบให้ครบทุกข้อ");
+      return;
+    }
+
+    const mupdatedErrors = multipleChoiceAnswers.map((answer) => {
+      if (answer === "") {
+        merrors.push(true);
+        return "กรุณาเลือกคำตอบ";
+      } else {
+        merrors.push(false);
+        return "";
+      }
+    });
+
+    setMultipleChoiceErrors(mupdatedErrors);
+
+    if (merrors.includes(true)) {
+      Alert.alert("❌ กรุณาตอบให้ครบทุกข้อก่อนส่งแบบทดสอบ");
+      return;
+    }
 
     // ตรวจคำตอบแบบ Multiple Choice
     multipleChoiceAnswers.forEach((answer, index) => {
@@ -48,10 +88,10 @@ const MultipleChoiceForm = () => {
     });
 
     setScore(totalScore);
-
-    // ล้างคำตอบหลังส่ง
     setMultipleChoiceAnswers(Array(multipleChoiceQuestions.length).fill(""));
     setShortAnswers(Array(shortAnswerQuestions.length).fill(""));
+    setShortAnswerErrors([]);
+    setMultipleChoiceErrors([]);
 
     const randomNumber = Math.floor(Math.random() * 100 + 1);
     const randNum = Math.floor(Math.random() * 3 + 1);
