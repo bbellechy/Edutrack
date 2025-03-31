@@ -34,19 +34,19 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </TouchableOpacity>
 
-      {/* ปุ่ม Pre-Test (สีเขียว) */}
-      <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Pre-Test')}>
+      {/* ปุ่ม Multiple Choices (สีเขียว) */}
+      <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('SubjectSelect')}>
         <View style={styles.cardContent}>
-          <Text style={styles.cardTitle}>Pre-Test</Text>
+          <Text style={styles.cardTitle}>Pre Test</Text>
 
           <Ionicons name="list-outline" size={30} color="#2E7D32" />
         </View>
       </TouchableOpacity>
 
-      {/* ปุ่ม Post-Test (สีเขียว) */}
-      <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('Post-Test')}>
+      {/* ปุ่ม Short Answer (สีเขียว) */}
+      <TouchableOpacity style={[styles.card, styles.greenCard]} onPress={() => navigation.navigate('SubjectSelect')}>
         <View style={styles.cardContent}>
-          <Text style={styles.cardTitle}>Post-Test</Text>
+          <Text style={styles.cardTitle}>Post Test</Text>
           <Ionicons name="create-outline" size={30} color="#2E7D32" />
         </View>
       </TouchableOpacity>

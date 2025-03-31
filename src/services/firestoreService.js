@@ -56,8 +56,8 @@ export const getAllData = async () => {
   }
   
   // แสดงผลลัพธ์
-  console.log("groupedBySubject", groupedBySubject);
-  console.log(groupedBySubject["Thai"]);
+  // console.log("groupedBySubject", groupedBySubject);
+  // console.log(groupedBySubject["Thai"]);
     
     return {
       parents: parentsData,
