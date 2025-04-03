@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, Alert, ScrollView } from "react-native";
+import { View, Text, TextInput, Alert, ScrollView, Button } from "react-native";
 import save_test_score from "../services/firestore/save_test_score";
 import load_test from "../services/firestore/load_test";
 import load_test_title from "../services/firestore/load_test_title";
+import { useRoute } from "@react-navigation/native";
 
 const PostTestScreen = () => {
   const [multipleChoiceQuestions, setMultipleChoiceQuestions] = useState([]);
@@ -11,13 +12,15 @@ const PostTestScreen = () => {
   const [shortAnswers, setShortAnswers] = useState([]);
   const [title, setTitle] = useState("");
   const [score, setScore] = useState(null);
+  const route = useRoute();
+  const { subjectID } = route.params || {};
   const [showAnswers, setShowAnswers] = useState(false); // 👉 ใช้แสดงเฉลย
   const [correctAnswers, setCorrectAnswers] = useState([]); // 👉 ใช้เก็บข้อมูลว่าข้อตอบถูกหรือผิด
 
   useEffect(() => {
     const fetchData = async () => {
-      const question = await load_test("oCA2gAV8NVIQpx6z8Ed1");
-      const test_title = await load_test_title("oCA2gAV8NVIQpx6z8Ed1");
+      const question = await load_test(subjectID);
+      const test_title = await load_test_title(subjectID);
 
       const multipleChoice = question.filter((q) => q.type === "multiple-choice");
       const shortAnswer = question.filter((q) => q.type === "short-answer");

@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, Alert, ScrollView } from "react-native";
 import save_test_score from "../services/firestore/save_test_score";
 import load_test from "../services/firestore/load_test";
 import load_test_title from "../services/firestore/load_test_title";
+import { useRoute } from "@react-navigation/native";
 
 const PreTestScreen = () => {
   const [multipleChoiceQuestions, setMultipleChoiceQuestions] = useState([]);
@@ -11,13 +12,16 @@ const PreTestScreen = () => {
   const [shortAnswers, setShortAnswers] = useState([]);
   const [title, setTitle] = useState("");
   const [score, setScore] = useState(null);
-  const [showAnswers, setShowAnswers] = useState(false);
-  const [correctAnswers, setCorrectAnswers] = useState([]);
+  const route = useRoute();
+  const { subjectID } = route.params || {};
+  const [showAnswers, setShowAnswers] = useState(false); // 👉 ใช้แสดงเฉลย
+  const [correctAnswers, setCorrectAnswers] = useState([]); // 👉 ใช้เก็บข้อมูลว่าข้อตอบถูกหรือผิด
+
 
   useEffect(() => {
     const fetchData = async () => {
-      const question = await load_test("oCA2gAV8NVIQpx6z8Ed1");
-      const test_title = await load_test_title("oCA2gAV8NVIQpx6z8Ed1");
+      const question = await load_test(subjectID);
+      const test_title = await load_test_title(subjectID);
 
       const multipleChoice = question.filter((q) => q.type === "multiple-choice");
       const shortAnswer = question.filter((q) => q.type === "short-answer");
@@ -27,7 +31,7 @@ const PreTestScreen = () => {
       setShortAnswerQuestions(shortAnswer);
       setMultipleChoiceAnswers(Array(multipleChoice.length).fill(""));
       setShortAnswers(Array(shortAnswer.length).fill(""));
-      setCorrectAnswers(Array(multipleChoice.length + shortAnswer.length).fill(null));
+      setCorrectAnswers(Array(multipleChoice.length + shortAnswer.length).fill(null)); // 👉 ตั้งค่าเริ่มต้นให้ยังไม่มีคำตอบถูกผิด
     };
     fetchData();
   }, []);
@@ -41,27 +45,29 @@ const PreTestScreen = () => {
       return;
     }
 
+    // ตรวจคำตอบ Multiple Choice
     multipleChoiceAnswers.forEach((answer, index) => {
       if (answer === multipleChoiceQuestions[index].correctAnswer) {
         totalScore += 1;
-        updatedCorrectAnswers[index] = true;
+        updatedCorrectAnswers[index] = true; // ✅ ตอบถูก
       } else {
-        updatedCorrectAnswers[index] = false;
+        updatedCorrectAnswers[index] = false; // ❌ ตอบผิด
       }
     });
 
+    // ตรวจคำตอบ Short Answer
     shortAnswers.forEach((answer, index) => {
       if (answer.trim().toLowerCase() === shortAnswerQuestions[index].correctAnswer.trim().toLowerCase()) {
         totalScore += 1;
-        updatedCorrectAnswers[multipleChoiceQuestions.length + index] = true;
+        updatedCorrectAnswers[multipleChoiceQuestions.length + index] = true; // ✅ ตอบถูก
       } else {
-        updatedCorrectAnswers[multipleChoiceQuestions.length + index] = false;
+        updatedCorrectAnswers[multipleChoiceQuestions.length + index] = false; // ❌ ตอบผิด
       }
     });
 
     setScore(totalScore);
     setCorrectAnswers(updatedCorrectAnswers);
-    setShowAnswers(true);
+    setShowAnswers(true); // 👉 แสดงเฉลยหลังจากกดบันทึก
 
     const randomNumber = Math.floor(Math.random() * 100 + 1);
     const randNum = Math.floor(Math.random() * 3 + 1);
@@ -93,10 +99,10 @@ const PreTestScreen = () => {
                     color={
                       showAnswers
                         ? choice === item.correctAnswer
-                          ? "#4CAF50"
+                          ? "#4CAF50" // ✅ สีเขียว (ตอบถูก)
                           : multipleChoiceAnswers[index] === choice
-                          ? "#FF5733"
-                          : "#2196F3"
+                          ? "#FF5733" // ❌ สีแดง (ตอบผิด)
+                          : "#2196F3" // 🔹 สีฟ้า (ตัวเลือกทั่วไป)
                         : multipleChoiceAnswers[index] === choice
                         ? "#4CAF50"
                         : "#2196F3"
@@ -131,8 +137,8 @@ const PreTestScreen = () => {
                   height: 50,
                   borderColor: showAnswers
                     ? correctAnswers[multipleChoiceQuestions.length + index]
-                      ? "#4CAF50"
-                      : "#FF5733"
+                      ? "#4CAF50" // ✅ สีเขียว (ตอบถูก)
+                      : "#FF5733" // ❌ สีแดง (ตอบผิด)
                     : "#d1d5db",
                   borderWidth: 1,
                   borderRadius: 8,
@@ -166,5 +172,6 @@ const PreTestScreen = () => {
     </ScrollView>
   );
 };
+
 
 export default PreTestScreen;
