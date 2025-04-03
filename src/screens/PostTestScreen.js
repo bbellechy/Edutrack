@@ -12,9 +12,6 @@ const PostTestScreen = () => {
   const [shortAnswers, setShortAnswers] = useState([]);
   const [title, setTitle] = useState("");
   const [score, setScore] = useState(null);
-
-  const [shortAnswerErrors, setShortAnswerErrors] = useState([]);
-  const [multipleChoiceErrors, setMultipleChoiceErrors] = useState([]);
   const route = useRoute();
   const { subjectID } = route.params || {};
   const [showAnswers, setShowAnswers] = useState(false); // 👉 ใช้แสดงเฉลย
@@ -71,13 +68,11 @@ const PostTestScreen = () => {
     setScore(totalScore);
     setMultipleChoiceAnswers(Array(multipleChoiceQuestions.length).fill(""));
     setShortAnswers(Array(shortAnswerQuestions.length).fill(""));
-    setShortAnswerErrors([]);
-    setMultipleChoiceErrors([]);
     setCorrectAnswers(updatedCorrectAnswers);
     setShowAnswers(true); // 👉 แสดงเฉลยหลังจากกดบันทึก
 
     const randomNumber = Math.floor(Math.random() * 1000 + 1);
-    await save_test_score(totalScore, "S000099", randomNumber.toString(), title.test_id, title.subject, "pre-test");
+    await save_test_score(totalScore, "S000099", randomNumber.toString(), title.test_id, title.subject, "post-test");
 
     Alert.alert(`✅ คุณได้ ${totalScore} คะแนน จาก ${multipleChoiceQuestions.length + shortAnswerQuestions.length} ข้อ`);
   };

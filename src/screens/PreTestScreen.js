@@ -12,9 +12,6 @@ const PreTestScreen = () => {
   const [shortAnswers, setShortAnswers] = useState([]);
   const [title, setTitle] = useState("");
   const [score, setScore] = useState(null);
-
-  const [shortAnswerErrors, setShortAnswerErrors] = useState([]);
-  const [multipleChoiceErrors, setMultipleChoiceErrors] = useState([]);
   const route = useRoute();
   const { subjectID } = route.params || {};
   const [showAnswers, setShowAnswers] = useState(false); // 👉 ใช้แสดงเฉลย
@@ -71,8 +68,6 @@ const PreTestScreen = () => {
     setScore(totalScore);
     setMultipleChoiceAnswers(Array(multipleChoiceQuestions.length).fill(""));
     setShortAnswers(Array(shortAnswerQuestions.length).fill(""));
-    setShortAnswerErrors([]);
-    setMultipleChoiceErrors([]);
     setCorrectAnswers(updatedCorrectAnswers);
     setShowAnswers(true); // 👉 แสดงเฉลยหลังจากกดบันทึก
 
