@@ -179,4 +179,4 @@ const PreTestScreen = () => {
   );
 };
 
-export default Pretestscreen;
+export default PreTestScreen;
