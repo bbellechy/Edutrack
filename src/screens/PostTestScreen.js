@@ -11,17 +11,14 @@ const PostTestScreen = () => {
   const [shortAnswers, setShortAnswers] = useState([]);
   const [title, setTitle] = useState("");
   const [score, setScore] = useState(null);
-  const [shortAnswerErrors, setShortAnswerErrors] = useState([]);
-  const [multipleChoiceErrors, setMultipleChoiceErrors] = useState([]);
-
-
+  const [showAnswers, setShowAnswers] = useState(false); // 👉 ใช้แสดงเฉลย
+  const [correctAnswers, setCorrectAnswers] = useState([]); // 👉 ใช้เก็บข้อมูลว่าข้อตอบถูกหรือผิด
 
   useEffect(() => {
     const fetchData = async () => {
       const question = await load_test("oCA2gAV8NVIQpx6z8Ed1");
       const test_title = await load_test_title("oCA2gAV8NVIQpx6z8Ed1");
 
-      // แยกคำถามแบบ Multiple Choice และ Short Answer
       const multipleChoice = question.filter((q) => q.type === "multiple-choice");
       const shortAnswer = question.filter((q) => q.type === "short-answer");
 
@@ -30,68 +27,43 @@ const PostTestScreen = () => {
       setShortAnswerQuestions(shortAnswer);
       setMultipleChoiceAnswers(Array(multipleChoice.length).fill(""));
       setShortAnswers(Array(shortAnswer.length).fill(""));
+      setCorrectAnswers(Array(multipleChoice.length + shortAnswer.length).fill(null)); // 👉 ตั้งค่าเริ่มต้นให้ยังไม่มีคำตอบถูกผิด
     };
     fetchData();
   }, []);
 
   const handleSubmit = async () => {
     let totalScore = 0;
-    let errors = [];
-    let merrors = [];
+    let updatedCorrectAnswers = [...correctAnswers];
 
-    const updatedErrors = shortAnswers.map((answer) => {
-      if (answer.trim() === "") {
-        errors.push(true);
-        return "กรุณากรอกคำตอบ";
-      } else {
-        errors.push(false);
-        return "";
-      }
-    });
-
-    setShortAnswerErrors(updatedErrors);
-
-    if (errors.includes(true)) {
-      Alert.alert("❌ กรุณากรอกคำตอบให้ครบทุกข้อ");
-      return;
-    }
-
-    const mupdatedErrors = multipleChoiceAnswers.map((answer) => {
-      if (answer === "") {
-        merrors.push(true);
-        return "กรุณาเลือกคำตอบ";
-      } else {
-        merrors.push(false);
-        return "";
-      }
-    });
-
-    setMultipleChoiceErrors(mupdatedErrors);
-
-    if (merrors.includes(true)) {
+    if (multipleChoiceAnswers.includes("") || shortAnswers.some((answer) => answer.trim() === "")) {
       Alert.alert("❌ กรุณาตอบให้ครบทุกข้อก่อนส่งแบบทดสอบ");
       return;
     }
 
-    // ตรวจคำตอบแบบ Multiple Choice
+    // ตรวจคำตอบ Multiple Choice
     multipleChoiceAnswers.forEach((answer, index) => {
       if (answer === multipleChoiceQuestions[index].correctAnswer) {
         totalScore += 1;
+        updatedCorrectAnswers[index] = true; // ✅ ตอบถูก
+      } else {
+        updatedCorrectAnswers[index] = false; // ❌ ตอบผิด
       }
     });
 
-    // ตรวจคำตอบแบบ Short Answer
+    // ตรวจคำตอบ Short Answer
     shortAnswers.forEach((answer, index) => {
       if (answer.trim().toLowerCase() === shortAnswerQuestions[index].correctAnswer.trim().toLowerCase()) {
         totalScore += 1;
+        updatedCorrectAnswers[multipleChoiceQuestions.length + index] = true; // ✅ ตอบถูก
+      } else {
+        updatedCorrectAnswers[multipleChoiceQuestions.length + index] = false; // ❌ ตอบผิด
       }
     });
 
     setScore(totalScore);
-    setMultipleChoiceAnswers(Array(multipleChoiceQuestions.length).fill(""));
-    setShortAnswers(Array(shortAnswerQuestions.length).fill(""));
-    setShortAnswerErrors([]);
-    setMultipleChoiceErrors([]);
+    setCorrectAnswers(updatedCorrectAnswers);
+    setShowAnswers(true); // 👉 แสดงเฉลยหลังจากกดบันทึก
 
     const randomNumber = Math.floor(Math.random() * 100 + 1);
     const randNum = Math.floor(Math.random() * 3 + 1);
@@ -120,10 +92,25 @@ const PostTestScreen = () => {
                       newAnswers[index] = choice;
                       setMultipleChoiceAnswers(newAnswers);
                     }}
-                    color={multipleChoiceAnswers[index] === choice ? "#4CAF50" : "#2196F3"}
+                    color={
+                      showAnswers
+                        ? choice === item.correctAnswer
+                          ? "#4CAF50" // ✅ สีเขียว (ตอบถูก)
+                          : multipleChoiceAnswers[index] === choice
+                          ? "#FF5733" // ❌ สีแดง (ตอบผิด)
+                          : "#2196F3" // 🔹 สีฟ้า (ตัวเลือกทั่วไป)
+                        : multipleChoiceAnswers[index] === choice
+                        ? "#4CAF50"
+                        : "#2196F3"
+                    }
                   />
                 </View>
               ))}
+              {showAnswers && (
+                <Text style={{ color: "green", marginTop: 5 }}>
+                  ✅ คำตอบที่ถูกต้อง: {item.correctAnswer}
+                </Text>
+              )}
             </View>
           ))}
         </View>
@@ -144,7 +131,11 @@ const PostTestScreen = () => {
                 numberOfLines={3}
                 style={{
                   height: 50,
-                  borderColor: "#d1d5db",
+                  borderColor: showAnswers
+                    ? correctAnswers[multipleChoiceQuestions.length + index]
+                      ? "#4CAF50" // ✅ สีเขียว (ตอบถูก)
+                      : "#FF5733" // ❌ สีแดง (ตอบผิด)
+                    : "#d1d5db",
                   borderWidth: 1,
                   borderRadius: 8,
                   paddingHorizontal: 10,
@@ -152,6 +143,11 @@ const PostTestScreen = () => {
                 }}
                 placeholder="พิมพ์คำตอบของคุณที่นี่..."
               />
+              {showAnswers && (
+                <Text style={{ color: "green", marginTop: 5 }}>
+                  ✅ คำตอบที่ถูกต้อง: {item.correctAnswer}
+                </Text>
+              )}
             </View>
           ))}
         </View>
