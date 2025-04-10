@@ -11,11 +11,11 @@ const HomeScreen = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 5 }}>
-            <Text style={{ color: '#0D47A1', fontWeight: 'bold' }}> {userType.toUpperCase()} </Text>
-          </View>
-          <TouchableOpacity onPress={() => setShowDropdown(true)} style={{ marginRight: 15 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 15 }}>
+          <Text style={{ color: '#0D47A1', fontWeight: 'bold', marginRight: 10 }}>
+            {userType.toUpperCase()}
+          </Text>
+          <TouchableOpacity onPress={() => setShowDropdown(true)}>
             <View style={{
               width: 30,
               height: 30,
@@ -29,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
               </Text>
             </View>
           </TouchableOpacity>
-        </>
+        </View>
       ),
     });
   }, [navigation, userType]);
@@ -37,6 +37,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
 
+      {/* Dropdown Modal */}
       <Modal transparent={true} visible={showDropdown} animationType="fade">
         <TouchableOpacity style={styles.dropdownOverlay} onPress={() => setShowDropdown(false)}>
           <View style={styles.dropdown}>
@@ -56,16 +57,13 @@ const HomeScreen = ({ navigation }) => {
 
       {userType === 'student' && (
         <>
-          {/* ปุ่ม Test Result */}
           <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('TestResult')}>
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle}>Test Result</Text>
-
               <Ionicons name="document-text-outline" size={30} color="#0D47A1" />
             </View>
           </TouchableOpacity>
 
-          {/* ปุ่ม Multiple Choices (Pre Test) */}
           <TouchableOpacity
             style={[styles.card, styles.greenCard]}
             onPress={() => navigation.navigate('SubjectSelect', { testType: 'PreTest' })}>
@@ -75,7 +73,6 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
 
-          {/* ปุ่ม Short Answer (Post Test) */}
           <TouchableOpacity
             style={[styles.card, styles.greenCard]}
             onPress={() => navigation.navigate('SubjectSelect', { testType: 'PostTest' })}>
@@ -89,7 +86,6 @@ const HomeScreen = ({ navigation }) => {
 
       {userType === 'teacher' && (
         <>
-          {/* ปุ่ม Dashboard */}
           <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Dashboard')}>
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle}>Dashboard</Text>
@@ -97,8 +93,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
 
-            {/* ปุ่ม Delete pre test */}
-            <TouchableOpacity
+          <TouchableOpacity
             style={[styles.card, styles.greenCard]}
             onPress={() => navigation.navigate('DeletePreTest', { testType: 'PreTest' })}>
             <View style={styles.cardContent}>
@@ -107,7 +102,6 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
 
-        {/* ปุ่ม Delete post test */}
           <TouchableOpacity
             style={[styles.card, styles.greenCard]}
             onPress={() => navigation.navigate('DeletePostTest', { testType: 'PostTest' })}>
@@ -127,11 +121,9 @@ const HomeScreen = ({ navigation }) => {
       
       {userType === 'parent' && (
         <>
-          {/* ปุ่ม Parent Result */}
           <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ParentResult')}>
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle}>Parent Result</Text>
-
               <Ionicons name="people-outline" size={30} color="#0D47A1" />
             </View>
           </TouchableOpacity>
@@ -146,7 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'top',
     alignItems: 'center',
-    backgroundColor: '#C0E7FF', // พื้นหลังสีฟ้าอ่อน
+    backgroundColor: '#C0E7FF',
     padding: 20,
   },
   title: {
@@ -176,7 +168,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#0D47A1',
-  }, dropdownOverlay: {
+  },
+  dropdownOverlay: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
