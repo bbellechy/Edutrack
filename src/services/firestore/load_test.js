@@ -9,7 +9,7 @@ const load_test = async (subject) => {
     );
     const snapshot = await getDocs(questionsRef);
 
-    const questions = snapshot.docs.filter((doc) => doc.id !== "meta").map((doc) => ({
+    const questions = snapshot.docs.filter((doc) => doc.id !== "meta" && doc.data().question !== "").map((doc) => ({
 
       id: doc.id,
       ...doc.data(),
