@@ -1,199 +1,160 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  Alert,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Button, ScrollView, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { useNavigation } from "@react-navigation/native";
-import { doc, deleteDoc } from "firebase/firestore";
 import { firestore } from "../firebase";
-import load_test from "../services/firestore/load_test";
-import load_test_title from "../services/firestore/load_test_title";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
-const delete_question = async (subject, questionId) => {
-  try {
-    const questionRef = doc(
-      firestore,
-      `Tests/oCA2gAV8NVIQpx6z8Ed1/${subject}/${questionId}`
-    );
-    await deleteDoc(questionRef);
-    console.log("Deleted question:", questionId);
-  } catch (error) {
-    console.error("Error deleting question:", error);
-  }
-};
+const TEST_DOC_ID = "oCA2gAV8NVIQpx6z8Ed1";
 
-const PretestScreen = () => {
-  const [subjectID, setSubjectID] = useState("");
-  const [multipleChoiceQuestions, setMultipleChoiceQuestions] = useState([]);
-  const [shortAnswerQuestions, setShortAnswerQuestions] = useState([]);
-  const [multipleChoiceAnswers, setMultipleChoiceAnswers] = useState([]);
-  const [shortAnswers, setShortAnswers] = useState([]);
-  const [title, setTitle] = useState({});
-  const [showAnswers, setShowAnswers] = useState(false);
-  const [correctAnswers, setCorrectAnswers] = useState([]);
+// 🔸 รายชื่อวิชาที่มีอยู่ (หากต้องการ dynamic ค่อยเปลี่ยนทีหลัง)
+const SUBJECTS = ["Thai", "Math", "Science"];
 
+const DeletePreTestScreen = () => {
+  const [testList, setTestList] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [questions, setQuestions] = useState([]);
+  const [testTitle, setTestTitle] = useState(null);
+
+  // ✅ โหลด meta ของแต่ละวิชา
   useEffect(() => {
-    if (subjectID) {
-      console.log("📘 SubjectID changed:", subjectID);
-      fetchData(subjectID);
-    }
-  }, [subjectID]);
+    const fetchTestList = async () => {
+      const testPromises = SUBJECTS.map(async (subjectName) => {
+        const metaDocRef = doc(firestore, "Tests", TEST_DOC_ID, subjectName, "meta");
+        const metaSnap = await getDoc(metaDocRef);
 
-  const fetchData = async (subject) => {
-    const question = await load_test(subject);
-    const test_title = await load_test_title(subject);
+        if (metaSnap.exists()) {
+          const metaData = metaSnap.data();
+          return {
+            subject: subjectName,
+            title: metaData.title || subjectName,
+            description: metaData.description || "",
+          };
+        } else {
+          return null;
+        }
+      });
 
-    const multipleChoice = question.filter((q) => q.type === "multiple-choice");
-    const shortAnswer = question.filter((q) => q.type === "short-answer");
+      const testData = (await Promise.all(testPromises)).filter(Boolean);
+      setTestList(testData);
+    };
 
-    setTitle(test_title);
-    setMultipleChoiceQuestions(multipleChoice);
-    setShortAnswerQuestions(shortAnswer);
-    setMultipleChoiceAnswers(Array(multipleChoice.length).fill(""));
-    setShortAnswers(Array(shortAnswer.length).fill(""));
-    setCorrectAnswers(Array(multipleChoice.length + shortAnswer.length).fill(null));
-    setScore(null);
-    setShowAnswers(false);
+    fetchTestList();
+  }, []);
+
+  // ✅ โหลดคำถามเมื่อเลือกวิชา
+  useEffect(() => {
+    const fetchTestDetails = async () => {
+      if (!selectedSubject) return;
+
+      // โหลด meta
+      const metaDocRef = doc(firestore, "Tests", TEST_DOC_ID, selectedSubject, "meta");
+      const metaSnap = await getDoc(metaDocRef);
+      if (metaSnap.exists()) {
+        setTestTitle(metaSnap.data());
+      }
+
+      // โหลดคำถามทั้งหมด (ยกเว้น meta)
+      const subjectColRef = collection(firestore, "Tests", TEST_DOC_ID, selectedSubject);
+      const snapshot = await getDocs(subjectColRef);
+      const questionsData = snapshot.docs
+        .filter((doc) => doc.id !== "meta")
+        .map((doc) => ({ id: doc.id, ...doc.data() }));
+
+      setQuestions(questionsData);
+    };
+
+    fetchTestDetails();
+  }, [selectedSubject]);
+
+  const handleDeleteQuestion = (questionId) => {
+    Alert.alert("⚠️ ยืนยัน", "ต้องการลบข้อนี้จริงหรือไม่?", [
+      { text: "ยกเลิก", style: "cancel" },
+      {
+        text: "ลบ",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await deleteDoc(doc(firestore, "Tests", TEST_DOC_ID, selectedSubject, questionId));
+            const updatedQuestions = questions.filter((q) => q.id !== questionId);
+            setQuestions(updatedQuestions);
+            Alert.alert("✅ ลบเรียบร้อยแล้ว");
+          } catch (error) {
+            console.error("ลบไม่สำเร็จ:", error);
+            Alert.alert("❌ ลบไม่สำเร็จ");
+          }
+        },
+      },
+    ]);
   };
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 20, backgroundColor: "#f7fafc" }}>
-      {/* Dropdown วิชา */}
-      <View style={{ marginBottom: 20 }}>
-        <Text style={{ fontSize: 16, marginBottom: 5 }}>เลือกวิชา:</Text>
+    <ScrollView contentContainerStyle={{ padding: 20 }}>
+      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
+        📝 เลือกวิชาที่ต้องการดูหรือลบ
+      </Text>
+
+      <View style={{ borderColor: "#ccc", borderWidth: 1, borderRadius: 8, marginBottom: 20 }}>
         <Picker
-          selectedValue={subjectID}
-          onValueChange={(itemValue) => setSubjectID(itemValue)}
-          style={{ backgroundColor: "#fff", borderRadius: 8 }}
+          selectedValue={selectedSubject}
+          onValueChange={(itemValue) => setSelectedSubject(itemValue)}
         >
-          <Picker.Item label="-- กรุณาเลือกวิชา --" value="" />
-          <Picker.Item label="คณิตศาสตร์" value="Math" />
-          <Picker.Item label="วิทยาศาสตร์" value="Science" />
-          <Picker.Item label="ภาษาไทย" value="Thai" />
+          <Picker.Item label="-- กรุณาเลือกวิชา --" value={null} />
+          {testList.map((test) => (
+            <Picker.Item key={test.subject} label={test.title} value={test.subject} />
+          ))}
         </Picker>
       </View>
 
-      {subjectID !== "" && (
-        <View>
-          <View style={{ alignItems: "center", marginBottom: 20 }}>
-            <Text style={{ fontSize: 24, fontWeight: "bold" }}>{title?.title || ""}</Text>
-            <Text style={{ fontSize: 16 }}>{title?.description || ""}</Text>
-          </View>
+      {testTitle && (
+        <>
+          <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 5 }}>
+            {testTitle?.title}
+          </Text>
+          <Text style={{ marginBottom: 20 }}>{testTitle?.description}</Text>
 
-          {/* Multiple Choice */}
-          {multipleChoiceQuestions.map((item, index) => (
-            <View key={index} style={{ marginBottom: 20 }}>
-              <Text style={{ fontSize: 16, fontWeight: "600", marginBottom: 10 }}>
-                {item.question}
+          {questions.map((q, index) => (
+            <View
+              key={q.id}
+              style={{
+                padding: 10,
+                marginBottom: 15,
+                backgroundColor: "#f1f5f9",
+                borderRadius: 8,
+              }}
+            >
+              <Text style={{ fontWeight: "600" }}>
+                ข้อ {index + 1}: {q.question}
               </Text>
-              {item.choices.map((choice, choiceIndex) => {
-                const choiceLabels = ["1.", "2.", "3.", "4."];
-                const isSelected = multipleChoiceAnswers[index] === choice;
-                const isCorrect = item.correctAnswer === choice;
-                const isIncorrect = isSelected && !isCorrect;
-
-                return (
-                  <TouchableOpacity
-                    key={choiceIndex}
-                    onPress={() => {
-                      const newAnswers = [...multipleChoiceAnswers];
-                      newAnswers[index] = choice;
-                      setMultipleChoiceAnswers(newAnswers);
-                    }}
-                    style={{
-                      backgroundColor: showAnswers
-                        ? isCorrect
-                          ? "#d1fae5" // เขียวอ่อน
-                          : isIncorrect
-                          ? "#fee2e2" // แดงอ่อน
-                          : "#f3f4f6"
-                        : isSelected
-                        ? "#bfdbfe" // ฟ้าอ่อน
-                        : "#f9fafb",
-                      padding: 10,
-                      borderRadius: 8,
-                      marginBottom: 5,
-                    }}
-                  >
-                    <Text style={{ fontSize: 16 }}>
-                      {choiceLabels[choiceIndex]} {choice}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-              {showAnswers && (
-                <Text style={{ color: "green", marginTop: 5 }}>
-                  ✅ คำตอบที่ถูกต้อง: {item.correctAnswer}
+              {q.type === "multiple-choice" ? (
+                q.choices?.map((choice, i) => (
+                  <Text key={i} style={{ paddingLeft: 10, marginTop: 3 }}>
+                    - {choice}
+                  </Text>
+                ))
+              ) : (
+                <Text style={{ fontStyle: "italic", marginTop: 5 }}>
+                  คำตอบ: __________
                 </Text>
               )}
-              {/* ปุ่มลบคำถาม */}
-              <Button
-                title="🗑️ ลบคำถาม"
-                color="#dc2626"
-                onPress={async () => {
-                  await delete_question(subjectID, item.id);
-                  await fetchData(subjectID);
-                }}
-              />
+              <View style={{ marginTop: 10 }}>
+                <Button
+                  title="🗑️ ลบข้อนี้"
+                  color="red"
+                  onPress={() => handleDeleteQuestion(q.id)}
+                />
+              </View>
             </View>
           ))}
-
-          {/* Short Answer */}
-          {shortAnswerQuestions.map((item, index) => (
-            <View key={index} style={{ marginBottom: 20 }}>
-              <Text style={{ fontSize: 16, fontWeight: "600", marginBottom: 10 }}>
-                {item.question}
-              </Text>
-              <TextInput
-                value={shortAnswers[index]}
-                onChangeText={(text) => {
-                  const newAnswers = [...shortAnswers];
-                  newAnswers[index] = text;
-                  setShortAnswers(newAnswers);
-                }}
-                multiline
-                numberOfLines={3}
-                style={{
-                  height: 50,
-                  borderColor: showAnswers
-                    ? correctAnswers[multipleChoiceQuestions.length + index]
-                      ? "#4CAF50"
-                      : "#FF5733"
-                    : "#d1d5db",
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  marginBottom: 10,
-                }}
-                placeholder="พิมพ์คำตอบของคุณที่นี่..."
-              />
-              {showAnswers && (
-                <Text style={{ color: "green", marginBottom: 5 }}>
-                  ✅ คำตอบที่ถูกต้อง: {item.correctAnswer}
-                </Text>
-              )}
-              {/* ปุ่มลบคำถาม */}
-              <Button
-                title="🗑️ ลบคำถาม"
-                color="#dc2626"
-                onPress={async () => {
-                  await delete_question(subjectID, item.id);
-                  await fetchData(subjectID);
-                }}
-              />
-            </View>
-          ))}
-        </View>
+        </>
       )}
     </ScrollView>
   );
 };
 
-export default PretestScreen;
+export default DeletePreTestScreen;
