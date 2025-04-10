@@ -7,6 +7,8 @@ import ParentResultSceen from "./src/screens/ParentResultSceen";
 import SubjectSelectScreen from "./src/screens/SubjectSelectScreen";
 import PostTestScreen from "./src/screens/PostTestScreen";
 import PreTestScreen from "./src/screens/PreTestScreen";
+import DeletePreTestSceeen from "./src/screens/DeletePreTestScreen";
+import DeletePostTestSceeen from "./src/screens/DeletePostTestScreen";
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -25,6 +27,8 @@ function App() {
         <Stack.Screen name="SubjectSelect" component={SubjectSelectScreen} />
         <Stack.Screen name="PreTest" component={PreTestScreen} />
         <Stack.Screen name="TestResult" component={TestResultSceeen} />
+        <Stack.Screen name="DeletePreTest" component={DeletePreTestSceeen} />
+        <Stack.Screen name="DeletePostTest" component={DeletePostTestSceeen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

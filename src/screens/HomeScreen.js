@@ -93,13 +93,38 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Dashboard')}>
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle}>Dashboard</Text>
+              <Ionicons name="bar-chart-outline" size={30} color="#0D47A1" />
+            </View>
+          </TouchableOpacity>
 
+            {/* ปุ่ม Delete pre test */}
+            <TouchableOpacity
+            style={[styles.card, styles.greenCard]}
+            onPress={() => navigation.navigate('DeletePreTest', { testType: 'PreTest' })}>
+            <View style={styles.cardContent}>
+              <Text style={styles.cardTitle}>Delete Pre Test</Text>
+              <Ionicons name="create-outline" size={30} color="#2E7D32" />
+            </View>
+          </TouchableOpacity>
+
+        {/* ปุ่ม Delete post test */}
+          <TouchableOpacity
+            style={[styles.card, styles.greenCard]}
+            onPress={() => navigation.navigate('DeletePostTest', { testType: 'PostTest' })}>
+            <View style={styles.cardContent}>
+              <Text style={styles.cardTitle}>Delete Post Test</Text>
+              <Ionicons name="create-outline" size={30} color="#2E7D32" />
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
               <Ionicons name="bar-chart-outline" size={30} color="#0D47A1" />
             </View>
           </TouchableOpacity>
         </>
       )}
 
+      
       {userType === 'parent' && (
         <>
           {/* ปุ่ม Parent Result */}
