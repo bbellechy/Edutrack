@@ -93,7 +93,6 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Dashboard')}>
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle}>Dashboard</Text>
-
               <Ionicons name="bar-chart-outline" size={30} color="#0D47A1" />
             </View>
           </TouchableOpacity>
@@ -119,7 +118,13 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         </>
       )}
+              <Ionicons name="bar-chart-outline" size={30} color="#0D47A1" />
+            </View>
+          </TouchableOpacity>
+        </>
+      )}
 
+      
       {userType === 'parent' && (
         <>
           {/* ปุ่ม Parent Result */}

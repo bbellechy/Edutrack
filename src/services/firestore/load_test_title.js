@@ -1,9 +1,9 @@
 import { firestore } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
-const load_test_title = async (test_id) => {
+const load_test_title = async (subject) => {
     try {
-        const testRef = doc(firestore, "Tests", test_id);
+        const testRef = doc(firestore, `Tests/oCA2gAV8NVIQpx6z8Ed1/${subject}/meta`);
         const snapshot = await getDoc(testRef);
 
         if (snapshot.exists()) {
