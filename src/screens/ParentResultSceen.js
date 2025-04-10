@@ -56,7 +56,6 @@ const ParentResultSceen = () => {
           <View style={styles.summaryContainer}>
             <View style={styles.card}>
               <Text>📊Pre-Test</Text>
-  
             </View>
             <View style={styles.card}>
               <Text>🔼 Post-Test</Text>
