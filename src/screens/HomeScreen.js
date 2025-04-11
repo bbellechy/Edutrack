@@ -93,6 +93,10 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
 
+<<<<<<< HEAD
+          {/* ปุ่ม Delete pre test */}
+=======
+>>>>>>> 036faf8a4f7885252d37661503202d2d089d2f51
           <TouchableOpacity
             style={[styles.card, styles.greenCard]}
             onPress={() => navigation.navigate('DeletePreTest', { testType: 'PreTest' })}>
@@ -102,6 +106,10 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
 
+<<<<<<< HEAD
+          {/* ปุ่ม Delete post test */}
+=======
+>>>>>>> 036faf8a4f7885252d37661503202d2d089d2f51
           <TouchableOpacity
             style={[styles.card, styles.greenCard]}
             onPress={() => navigation.navigate('DeletePostTest', { testType: 'PostTest' })}>
@@ -113,6 +121,24 @@ const HomeScreen = ({ navigation }) => {
         </>
       )}
 
+<<<<<<< HEAD
+
+      {
+        userType === 'parent' && (
+          <>
+            {/* ปุ่ม Parent Result */}
+            <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ParentResult')}>
+              <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>Parent Result</Text>
+
+                <Ionicons name="people-outline" size={30} color="#0D47A1" />
+              </View>
+            </TouchableOpacity>
+          </>
+        )
+      }
+    </View >
+=======
       {userType === 'parent' && (
         <>
           <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ParentResult')}>
@@ -124,6 +150,7 @@ const HomeScreen = ({ navigation }) => {
         </>
       )}
     </View>
+>>>>>>> 036faf8a4f7885252d37661503202d2d089d2f51
   );
 };
 
