@@ -97,8 +97,8 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
 
-            {/* ปุ่ม Delete pre test */}
-            <TouchableOpacity
+          {/* ปุ่ม Delete pre test */}
+          <TouchableOpacity
             style={[styles.card, styles.greenCard]}
             onPress={() => navigation.navigate('DeletePreTest', { testType: 'PreTest' })}>
             <View style={styles.cardContent}>
@@ -107,7 +107,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
 
-        {/* ปุ่ม Delete post test */}
+          {/* ปุ่ม Delete post test */}
           <TouchableOpacity
             style={[styles.card, styles.greenCard]}
             onPress={() => navigation.navigate('DeletePostTest', { testType: 'PostTest' })}>
@@ -118,26 +118,23 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         </>
       )}
-              <Ionicons name="bar-chart-outline" size={30} color="#0D47A1" />
-            </View>
-          </TouchableOpacity>
-        </>
-      )}
 
-      
-      {userType === 'parent' && (
-        <>
-          {/* ปุ่ม Parent Result */}
-          <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ParentResult')}>
-            <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>Parent Result</Text>
 
-              <Ionicons name="people-outline" size={30} color="#0D47A1" />
-            </View>
-          </TouchableOpacity>
-        </>
-      )}
-    </View>
+      {
+        userType === 'parent' && (
+          <>
+            {/* ปุ่ม Parent Result */}
+            <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ParentResult')}>
+              <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>Parent Result</Text>
+
+                <Ionicons name="people-outline" size={30} color="#0D47A1" />
+              </View>
+            </TouchableOpacity>
+          </>
+        )
+      }
+    </View >
   );
 };
 
