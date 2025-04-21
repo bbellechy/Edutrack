@@ -64,10 +64,11 @@ const PreTestScreen = () => {
         updatedCorrectAnswers[multipleChoiceQuestions.length + index] = false; // ❌ ตอบผิด
       }
     });
+    console.log(111,updatedCorrectAnswers)
 
     setScore(totalScore);
-    setMultipleChoiceAnswers(Array(multipleChoiceQuestions.length).fill(""));
-    setShortAnswers(Array(shortAnswerQuestions.length).fill(""));
+    // setMultipleChoiceAnswers(Array(multipleChoiceQuestions.length).fill(""));
+    // setShortAnswers(Array(shortAnswerQuestions.length).fill(""));
     setCorrectAnswers(updatedCorrectAnswers);
     setShowAnswers(true); // 👉 แสดงเฉลยหลังจากกดบันทึก
 
