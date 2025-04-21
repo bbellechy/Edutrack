@@ -11,6 +11,7 @@ import DeletePreTestSceeen from "./src/screens/DeletePreTestScreen";
 import DeletePostTestSceeen from "./src/screens/DeletePostTestScreen";
 import AddPreTestScreen from "./src/screens/AddEditPreTestScreen";
 import AddEditQuestionScreen from "./src/screens/AddEditQuestionScreen";
+import AddPostTestScreen from "./src/screens/AddEditPostTestScreen";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -32,6 +33,7 @@ function App() {
         <Stack.Screen name="DeletePostTest" component={DeletePostTestSceeen} />
         <Stack.Screen name="AddEditPreTest" component={AddPreTestScreen} />
         <Stack.Screen name="AddEditQuestion" component={AddEditQuestionScreen} />
+        <Stack.Screen name="AddEditPostTest" component={AddPostTestScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -144,6 +144,18 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity
             style={[styles.card, styles.greenCard]}
             onPress={() =>
+              navigation.navigate("AddEditPostTest", { testType: "PostTest" })
+            }
+          >
+            <View style={styles.cardContent}>
+              <Text style={styles.cardTitle}>Add/Edit Post Test</Text>
+              <Ionicons name="create-outline" size={30} color="#2E7D32" />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.card, styles.greenCard]}
+            onPress={() =>
               navigation.navigate("DeletePreTest", { testType: "PreTest" })
             }
           >
