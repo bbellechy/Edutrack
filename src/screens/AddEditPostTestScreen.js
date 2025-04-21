@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import load_test from "../services/firestore/load_test";
 import load_test_title from "../services/firestore/load_test_title";
 
-const AddPreTestScreen = () => {
+const AddPostTestScreen = () => {
   const [subjectID, setSubjectID] = useState("");
   const [multipleChoiceQuestions, setMultipleChoiceQuestions] = useState([]);
   const [shortAnswerQuestions, setShortAnswerQuestions] = useState([]);
@@ -163,4 +163,4 @@ const AddPreTestScreen = () => {
   );
 };
 
-export default AddPreTestScreen;
+export default AddPostTestScreen;

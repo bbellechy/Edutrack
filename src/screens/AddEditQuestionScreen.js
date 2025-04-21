@@ -16,7 +16,7 @@ const EditQuestionScreen = ({ route, navigation }) => {
   const handleSave = async () => {
     try {
       if (isEditMode) {
-        // กรณี Edit
+        //Edit
         const questionRef = doc(
           firestore,
           `Tests/oCA2gAV8NVIQpx6z8Ed1/${subjectID}/${question.id}`
@@ -33,7 +33,7 @@ const EditQuestionScreen = ({ route, navigation }) => {
 
         await updateDoc(questionRef, updatedData);
       } else {
-        // กรณี Add
+        //Add
         const questionRef = collection(
           firestore,
           `Tests/oCA2gAV8NVIQpx6z8Ed1/${subjectID}`
